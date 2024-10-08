@@ -12,7 +12,7 @@ RUN mvn clean package -DskipTests
 FROM --platform=linux/amd64  openjdk:17 AS build
 
 # copy only the artifacts we need from the first stage and discard the rest
-COPY --from=MAVEN_BUILD ./target/sonarqube-0.0.1-SNAPSHOT.jar /app.jar
+COPY --from=MAVEN_BUILD ./target/sonarqube-0.0.${revision}-SNAPSHOT.jar /app.jar
 
 # set the startup command to execute the jar
 CMD ["java", "-jar", "/app.jar"]
