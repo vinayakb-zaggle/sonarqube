@@ -3,16 +3,17 @@ FROM maven:3.8.3-openjdk-17 AS MAVEN_BUILD
 
 # copy the pom and src code to the container
 COPY ./ ./
-COPY settings.xml /root/.m2/settings.xml
 
-# package our application code
-RUN mvn clean package -DskipTests
+# package our application code, with the dynamic revision
+ARG PR_NUMBER
+RUN mvn clean package -DskipTests -Drevision=0.0.${PR_NUMBER}-SNAPSHOT
 
-# the second stage of our build will use open jdk 11
-FROM --platform=linux/amd64  openjdk:17 AS build
+# the second stage of our build will use open jdk 17
+FROM --platform=linux/amd64 openjdk:17 AS build
 
 # copy only the artifacts we need from the first stage and discard the rest
-COPY --from=MAVEN_BUILD ./target/sonarqube-0.0.1-SNAPSHOT.jar /app.jar
+ARG PR_NUMBER
+COPY --from=MAVEN_BUILD ./target/sonarqube-0.0.${PR_NUMBER}-SNAPSHOT.jar /app.jar
 
 # set the startup command to execute the jar
 CMD ["java", "-jar", "/app.jar"]
