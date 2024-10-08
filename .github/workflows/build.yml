@@ -40,4 +40,4 @@ jobs:
 
       - name: Build Docker Image
         run: |
-          docker build --build-arg PR_NUMBER=${{ env.PR_NUMBER }} -t my-app:0.0.${{ env.PR_NUMBER }}-SNAPSHOT .
+          docker build --build-arg PR_NUMBER=${{ env.PR_NUMBER }} -t sonarqube:0.0.${{ env.PR_NUMBER }}-SNAPSHOT .

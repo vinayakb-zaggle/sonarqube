@@ -3,7 +3,6 @@ FROM maven:3.8.3-openjdk-17 AS MAVEN_BUILD
 
 # copy the pom and src code to the container
 COPY ./ ./
-COPY settings.xml /root/.m2/settings.xml
 
 # package our application code
 RUN mvn clean package -DskipTests
